@@ -1,7 +1,13 @@
+import yaml
+from pathlib import Path
 from telegram import Update
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
 
-BOT_TOKEN = ""
+def get_token():
+    full_file_path = Path(__file__).parent.joinpath('token.yaml')
+    with open(full_file_path) as token:
+        token_data = yaml.load(token, Loader=yaml.Loader)
+    return token_data
 
 #   respond to /start
 def start(update: Update, context: CallbackContext) -> None:
@@ -14,7 +20,7 @@ def main():
     print('Bot Started!\n')
     print('Bot link: http://t.me/erikd_test_bot\n\n')
 
-    updater = Updater(BOT_TOKEN, use_context=True)
+    updater = Updater(get_token(), use_context=True)
     dp = updater.dispatcher
     dp.add_handler(CommandHandler('start',start))
 
