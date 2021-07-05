@@ -1,4 +1,5 @@
 import yaml
+import logging
 from pathlib import Path
 from telegram import Update
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
@@ -8,6 +9,12 @@ def get_token():
     with open(full_file_path) as token:
         token_data = yaml.load(token, Loader=yaml.Loader)
     return token_data
+
+#   enable logging
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
+)
+logger = logging.getLogger(__name__)
 
 #   respond to /start
 def start(update: Update, context: CallbackContext) -> None:
