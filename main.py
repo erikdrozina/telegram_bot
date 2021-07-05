@@ -28,7 +28,7 @@ def start(update: Update, context: CallbackContext) -> None:
 
 #   respond to /help
 def help_command(update: Update, context: CallbackContext) -> None:
-    update.message.reply_text('List of commands: \n\n- help')
+    update.message.reply_text('List of commands: \n\n- help\n- doggo')
 
 def main():
     print('Bot Started!\n')
