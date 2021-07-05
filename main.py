@@ -24,9 +24,8 @@ def start(update: Update, context: CallbackContext) -> None:
     user = update.message.from_user
     logger.info('User %s started /start', user.name)
     user = update.effective_user
-    update.message.reply_markdown_v2(
-        fr'Hi {user.mention_markdown_v2()}, How can I help you?'
-    )
+    update.message.reply_markdown_v2(fr'Hi {user.mention_markdown_v2()}, How can I help you?')
+    update.message.reply_text('Type /help to view all available commands')
 
 #   respond to /help
 def help_command(update: Update, context: CallbackContext) -> None:
