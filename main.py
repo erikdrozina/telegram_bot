@@ -1,5 +1,6 @@
 import yaml
 import logging
+from doggo import doggoF
 from pathlib import Path
 from telegram import Update
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
@@ -37,6 +38,7 @@ def main():
     dp = updater.dispatcher
     dp.add_handler(CommandHandler('start',start))
     dp.add_handler(CommandHandler('help',help_command))
+    dp.add_handler(CommandHandler('doggo',doggoF))
 
     updater.start_polling()
     updater.idle()
