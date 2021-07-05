@@ -16,12 +16,18 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+########################### BASIC COMM ###########################
+
 #   respond to /start
 def start(update: Update, context: CallbackContext) -> None:
     user = update.effective_user
     update.message.reply_markdown_v2(
         fr'Hi {user.mention_markdown_v2()}, How can I help you?'
     )
+
+#   respond to /help
+def help_command(update: Update, context: CallbackContext) -> None:
+    update.message.reply_text('List of commands: \n\n- help')
 
 def main():
     print('Bot Started!\n')
