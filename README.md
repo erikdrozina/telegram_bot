@@ -7,6 +7,8 @@ To install required packages run:
 
     pip3 install python-telegram-bot pyyaml
 
+## Token:
+To generate the token you have to talk to [@BotFather](https://telegram.me/botfather) on Telegram.
 
 ## Usage:
 Open a terminal and type:
