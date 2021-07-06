@@ -5,6 +5,7 @@ from pathlib import Path
 from telegram import Update
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
 
+#   retrive the bot token from the token.yaml file
 def get_token():
     full_file_path = Path(__file__).parent.joinpath('token.yaml')
     with open(full_file_path) as token:
@@ -33,12 +34,13 @@ def help_command(update: Update, context: CallbackContext) -> None:
     logger.info('User %s started /help', user.name)
     update.message.reply_text('List of commands: \n\n- help\n- doggo')
 
+#   respond to an unknown command
 def unknown(update: Update, context: CallbackContext)-> None:
     user = update.message.from_user
     logger.info('User %s started unknow command', user.name)
     context.bot.send_message(chat_id=update.effective_chat.id, text="Unknown command\nMe bot, me no pero like u :(")
 
-
+############################## MAIN ##############################
 
 def main():
     print('Bot Started!\n')
