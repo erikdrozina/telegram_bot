@@ -33,6 +33,13 @@ def help_command(update: Update, context: CallbackContext) -> None:
     logger.info('User %s started /help', user.name)
     update.message.reply_text('List of commands: \n\n- help\n- doggo')
 
+def unknown(update: Update, context: CallbackContext)-> None:
+    user = update.message.from_user
+    logger.info('User %s started unknow command', user.name)
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Unknown command\nMe bot, me no pero like u :(")
+
+
+
 def main():
     print('Bot Started!\n')
     print('Bot link: http://t.me/erikd_test_bot\n\n')
@@ -42,6 +49,7 @@ def main():
     dp.add_handler(CommandHandler('start',start))
     dp.add_handler(CommandHandler('help',help_command))
     dp.add_handler(CommandHandler('doggo',doggoF))
+    dp.add_handler(MessageHandler(Filters.command, unknown)) 
 
     updater.start_polling()
     updater.idle()
