@@ -42,7 +42,7 @@ def help_command(update: Update, context: CallbackContext) -> None:
 #   respond to an unknown command
 def unknown(update: Update, context: CallbackContext)-> None:
     user = update.message.from_user
-    logger.info('User %s started unknow command', user.name)
+    logger.info('User %s started unknow command: %s', user.name, update.message.text)
     context.bot.send_message(chat_id=update.effective_chat.id, text='Unknown command\nMe bot, me no pero like u :(')
 
 ########################### COVID INFO ###########################
