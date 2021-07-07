@@ -24,3 +24,8 @@ Run the python code:
 
 Enjoy :)
 
+## Bot feature:
+- Send cute doggo pictures
+- Give info about covid thanks to [VACCOVID](https://rapidapi.com/vaccovidlive-vaccovidlive-default/api/vaccovid-coronavirus-vaccine-and-treatment-tracker) api
+- Send a message to a user by chat ID
+- Funny bot messages and adorable profile picture 
