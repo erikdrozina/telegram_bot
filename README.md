@@ -1,6 +1,8 @@
 # Telegram_bot
 
-#### Just a bot I did in my free time  ¯\\_(ツ)_/¯
+ Just a bot I did in my free time  ¯\\_(ツ)_/¯
+
+ [Bot Link](http://t.me/erikd_test_bot)
 
 ## Packages:
 To install required packages run:
