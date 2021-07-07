@@ -80,9 +80,8 @@ def send_msg(update: Update, context: CallbackContext)-> int:
         logger.info('User %s ENDED /msg', user.name)
     return ConversationHandler.END
 
-def cancel(update: Update, context: CallbackContext) -> int:
+def cancel_msg(update: Update, context: CallbackContext) -> int:
     user = update.message.from_user
-    logger.info('User %s canceled the conversation.', user.name)
     update.message.reply_text('OK, nevermind :)', reply_markup=ReplyKeyboardRemove())
     logger.info('User %s STOPPED /msg', user.name)
     return ConversationHandler.END
@@ -129,9 +128,8 @@ def iso(update: Update, context: CallbackContext) -> int:
     logger.info('User %s ENDED /covid_info', user.name)
     return ConversationHandler.END
 
-def cancel(update: Update, context: CallbackContext) -> int:
+def cancel_covid(update: Update, context: CallbackContext) -> int:
     user = update.message.from_user
-    logger.info('User %s canceled the conversation.', user.first_name)
     update.message.reply_text('OK, nevermind :)', reply_markup=ReplyKeyboardRemove())
     logger.info('User %s STOPPED /covid_info', user.name)
     return ConversationHandler.END
@@ -148,7 +146,7 @@ def main():
             COUNTRY: [MessageHandler(Filters.text & ~Filters.command, country)],
             ISO: [MessageHandler(Filters.text & ~Filters.command, iso)],
         },
-        fallbacks=[CommandHandler('cancel', cancel)],
+        fallbacks=[CommandHandler('cancel', cancel_covid)],
     )
 
     msg_conv_handler = ConversationHandler(
@@ -157,7 +155,7 @@ def main():
             ID: [MessageHandler(Filters.text & ~Filters.command, get_msg)],
             MESSAGE: [MessageHandler(Filters.text & ~Filters.command, send_msg)],
         },
-        fallbacks=[CommandHandler('cancel', cancel)],
+        fallbacks=[CommandHandler('cancel', cancel_msg)],
     )
     updater = Updater(get_token(), use_context=True)
     dp = updater.dispatcher
