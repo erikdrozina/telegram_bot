@@ -69,11 +69,15 @@ def send_msg(update: Update, context: CallbackContext)-> int:
     txt = update.message.text    
     logger.info('Message: %s by %s', txt, user.name)
     send_msg.msg = txt
-    context.bot.send_message(chat_id=get_id.id, text=send_msg.msg)
-    logger.info('Message: %s sent to user id %s', send_msg.msg, get_id.id)
-    update.message.reply_text('Message sent')
-    logger.info('User %s ENDED /msg', user.name)
-
+    try:
+        context.bot.send_message(chat_id=get_id.id, text=send_msg.msg)
+        logger.info('Message: %s sent to user id %s', send_msg.msg, get_id.id)
+        update.message.reply_text('Message sent')
+        logger.info('User %s ENDED /msg', user.name)
+    except:
+        logger.info('Message: %s NOT sent to user id %s', send_msg.msg, get_id.id)
+        update.message.reply_text('Couldn\'t send the message\nThe user must start the bot or the chat id was wrong')
+        logger.info('User %s ENDED /msg', user.name)
     return ConversationHandler.END
 
 def cancel(update: Update, context: CallbackContext) -> int:
