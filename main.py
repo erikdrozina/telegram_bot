@@ -97,20 +97,21 @@ def covid_url(countryname, iso):
 def covid_inf(update: Update, context: CallbackContext) -> int:
     user = update.message.from_user
     logger.info('User %s started /covid_info', user.name)
-    update.message.reply_text('Name of the country (first letter capital)')
+    update.message.reply_text('Name of the country (first letter capital)\n\nType /cancel to exit')
     return COUNTRY
 
 def country(update: Update, context: CallbackContext) -> int:
+    user = update.message.from_user
     var_country = update.message.text
-    logger.info('Country: %s', var_country)
+    logger.info('Country: %s by %s', var_country, user.name)
     country.country = var_country
-    update.message.reply_text('Acronym of the country (three letters)')
+    update.message.reply_text('Acronym of the country (three letters)\n\nType /cancel to exit')
     return ISO
 
 def iso(update: Update, context: CallbackContext) -> int:
     user = update.message.from_user
     var_iso = update.message.text
-    logger.info('Acr: %s', var_iso)
+    logger.info('Acr: %s by %s', var_iso, user.name)
     update.message.reply_text('Loading data...')
     iso.iso = var_iso
 
