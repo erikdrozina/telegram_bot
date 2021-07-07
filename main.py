@@ -23,6 +23,9 @@ logger = logging.getLogger(__name__)
 #   needed for /covid_info conversation
 COUNTRY, ISO = range(2)
 
+#   needed for /msg conversation
+ID, MESSAGE = range(2)
+
 ########################### BASIC COMM ###########################
 
 #   respond to /start
@@ -44,6 +47,41 @@ def unknown(update: Update, context: CallbackContext)-> None:
     user = update.message.from_user
     logger.info('User %s started unknow command: %s', user.name, update.message.text)
     context.bot.send_message(chat_id=update.effective_chat.id, text='Unknown command\nMe bot, me no pero like u :(')
+
+########################## SEND MESSAGE ##########################
+
+def get_id(update: Update, context: CallbackContext)-> int:
+    user = update.message.from_user
+    logger.info('User %s started /msg', user.name)
+    update.message.reply_text("Send the chat ID you want to send the message to\n\nType /cancel to exit")
+    return ID
+
+def get_msg(update: Update, context: CallbackContext)-> int:
+    user = update.message.from_user
+    txt = update.message.text
+    logger.info('Chat id: %s by %s', txt, user.name)
+    get_id.id = txt
+    update.message.reply_text("Send the message you want to send\n\nType /cancel to exit")
+    return MESSAGE
+
+def send_msg(update: Update, context: CallbackContext)-> int:
+    user = update.message.from_user
+    txt = update.message.text    
+    logger.info('Message: %s by %s', txt, user.name)
+    send_msg.msg = txt
+    context.bot.send_message(chat_id=get_id.id, text=send_msg.msg)
+    logger.info('Message: %s sent to user id %s', send_msg.msg, get_id.id)
+    update.message.reply_text('Message sent')
+    logger.info('User %s ENDED /msg', user.name)
+
+    return ConversationHandler.END
+
+def cancel(update: Update, context: CallbackContext) -> int:
+    user = update.message.from_user
+    logger.info('User %s canceled the conversation.', user.name)
+    update.message.reply_text('OK, nevermind :)', reply_markup=ReplyKeyboardRemove())
+    logger.info('User %s STOPPED /msg', user.name)
+    return ConversationHandler.END
 
 ########################### COVID INFO ###########################
 
@@ -108,12 +146,21 @@ def main():
         fallbacks=[CommandHandler('cancel', cancel)],
     )
 
+    msg_conv_handler = ConversationHandler(
+        entry_points=[CommandHandler('msg', get_id)],
+        states={
+            ID: [MessageHandler(Filters.text & ~Filters.command, get_msg)],
+            MESSAGE: [MessageHandler(Filters.text & ~Filters.command, send_msg)],
+        },
+        fallbacks=[CommandHandler('cancel', cancel)],
+    )
     updater = Updater(get_token(), use_context=True)
     dp = updater.dispatcher
     dp.add_handler(CommandHandler('start',start))
     dp.add_handler(CommandHandler('help',help_command))
     dp.add_handler(CommandHandler('doggo',doggoF))
     dp.add_handler(covid_conv_handler)
+    dp.add_handler(msg_conv_handler)
     dp.add_handler(MessageHandler(Filters.command, unknown))
 
     updater.start_polling()
