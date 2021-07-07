@@ -40,7 +40,7 @@ def start(update: Update, context: CallbackContext) -> None:
 def help_command(update: Update, context: CallbackContext) -> None:
     user = update.message.from_user
     logger.info('User %s started /help', user.name)
-    update.message.reply_text('List of commands: \n\n- help\n- doggo\n- covid_info')
+    update.message.reply_text('List of commands: \n\n- help\n- doggo\n- covid_info\n- msg')
 
 #   respond to an unknown command
 def unknown(update: Update, context: CallbackContext)-> None:
