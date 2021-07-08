@@ -73,11 +73,11 @@ def send_msg(update: Update, context: CallbackContext)-> int:
         context.bot.send_message(chat_id=get_id.id, text=send_msg.msg)
         logger.info('Message: %s sent to user id %s', send_msg.msg, get_id.id)
         update.message.reply_text('Message sent')
-        logger.info('User %s ENDED /msg', user.name)
+        logger.info('User %s ENDED /msg with success', user.name)
     except:
         logger.info('Message: %s NOT sent to user id %s', send_msg.msg, get_id.id)
         update.message.reply_text('Couldn\'t send the message\nThe user must start the bot or the chat id was wrong')
-        logger.info('User %s ENDED /msg', user.name)
+        logger.info('User %s ENDED /msg with error', user.name)
     return ConversationHandler.END
 
 def cancel_msg(update: Update, context: CallbackContext) -> int:
@@ -115,12 +115,14 @@ def country(update: Update, context: CallbackContext) -> int:
         jres = json.loads(response)
         try:
             context.bot.send_message(chat_id=update.effective_chat.id, text='Covid stats for: '+jres['response'][0]['country']+', '+jres['response'][0]['continent']+' as '+jres['response'][0]['day']+'\n\nNew Cases: '+jres['response'][0]['cases']['new'].replace('+', '')+'\nActive Cases:'+str(jres['response'][0]['cases']['active'])+'\nCritical Cases: '+str(jres['response'][0]['cases']['critical'])+'\nTotal Recovered: '+str(jres['response'][0]['cases']['recovered'])+'\n\nNew Deaths: '+jres['response'][0]['deaths']['new'].replace('+','')+'\nTtoal Deaths: '+str(jres['response'][0]['deaths']['total']))
+            logger.info('User %s ENDED /covid_info searching "%s with success"', user.name, var_country)
         except:
             update.message.reply_text("Sorry, The selected country has issue with their data\nTry another coutry")
+            logger.info('User %s ENDED /covid_info searching "%s with error"', user.name, var_country)
     else:
         update.message.reply_text('No result found, sowwy sar :(')
+        logger.info('User %s ENDED /covid_info searching "%s with error"', user.name, var_country)
 
-    logger.info('User %s ENDED /covid_info searching "%s"', user.name, var_country)
     return ConversationHandler.END
 
 def cancel_covid(update: Update, context: CallbackContext) -> int:
