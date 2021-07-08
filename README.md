@@ -28,6 +28,6 @@ Enjoy :)
 
 ## Bot feature:
 - Send cute doggo pictures
-- Give info about covid thanks to [VACCOVID](https://rapidapi.com/vaccovidlive-vaccovidlive-default/api/vaccovid-coronavirus-vaccine-and-treatment-tracker) api
+- Give info about covid thanks to [COVID-19](https://rapidapi.com/vaccovidlive-vaccovidlive-default/api/vaccovid-coronavirus-vaccine-and-treatment-tracker) API by [API-SPORTS](https://rapidapi.com/user/api-sports)
 - Send a message to a user by chat ID
 - Funny bot messages and adorable profile picture 
