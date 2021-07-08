@@ -21,7 +21,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 #   needed for /covid_info conversation
-COUNTRY, ISO = range(2)
+COUNTRY = range(1)
 
 #   needed for /msg conversation
 ID, MESSAGE = range(2)
@@ -88,44 +88,39 @@ def cancel_msg(update: Update, context: CallbackContext) -> int:
 
 ########################### COVID INFO ###########################
 
-def covid_url(countryname, iso):
-    url = 'https://vaccovid-coronavirus-vaccine-and-treatment-tracker.p.rapidapi.com/api/npm-covid-data/country-report-iso-based/'+countryname+'/'+iso
+def covid_url(countryname):
+    url = "https://covid-193.p.rapidapi.com/statistics"
+    querystring = {"country": countryname}
+
     headers = {
-    'x-rapidapi-key': '0e312021bdmsha51edbc7e3eab41p124c7ajsn40c907167716',
-    'x-rapidapi-host': 'vaccovid-coronavirus-vaccine-and-treatment-tracker.p.rapidapi.com'
+    'x-rapidapi-key': "0e312021bdmsha51edbc7e3eab41p124c7ajsn40c907167716",
+    'x-rapidapi-host': "covid-193.p.rapidapi.com"
     }
-    response = requests.request('GET', url, headers=headers)
+    response = requests.request("GET", url, headers=headers, params=querystring)
     return response.text
 
 def covid_inf(update: Update, context: CallbackContext) -> int:
     user = update.message.from_user
     logger.info('User %s started /covid_info', user.name)
-    update.message.reply_text('Name of the country (first letter capital)\n\nType /cancel to exit')
+    update.message.reply_text('Name of the country\n\nType /cancel to exit')
     return COUNTRY
 
 def country(update: Update, context: CallbackContext) -> int:
     user = update.message.from_user
     var_country = update.message.text
     logger.info('Country: %s by %s', var_country, user.name)
-    country.country = var_country
-    update.message.reply_text('Acronym of the country (three letters)\n\nType /cancel to exit')
-    return ISO
-
-def iso(update: Update, context: CallbackContext) -> int:
-    user = update.message.from_user
-    var_iso = update.message.text
-    logger.info('Acr: %s by %s', var_iso, user.name)
     update.message.reply_text('Loading data...')
-    iso.iso = var_iso
-
-    response = covid_url(country.country, iso.iso).replace("\\'", "")
-    if response != '[]':
+    response = covid_url(var_country)
+    if response != '{"get":"statistics","parameters":{"country":"'+var_country+'"},"errors":[],"results":0,"response":[]}':
         jres = json.loads(response)
-        update.message.reply_text('Country: '+jres[0]['Country']+', '+jres[0]['ThreeLetterSymbol']+'\nInfection Risk: '+str(jres[0]['Infection_Risk'])+'\nNew Cases: '+str(jres[0]['NewCases'])+'\nNew Recovered: '+str(jres[0]['NewRecovered'])+'\nFatality Rate: '+str(jres[0]['Case_Fatality_Rate']))
-
+        try:
+            context.bot.send_message(chat_id=update.effective_chat.id, text='Covid stats for: '+jres['response'][0]['country']+', '+jres['response'][0]['continent']+' as '+jres['response'][0]['day']+'\n\nNew Cases: '+jres['response'][0]['cases']['new'].replace('+', '')+'\nActive Cases:'+str(jres['response'][0]['cases']['active'])+'\nCritical Cases: '+str(jres['response'][0]['cases']['critical'])+'\nTotal Recovered: '+str(jres['response'][0]['cases']['recovered'])+'\n\nNew Deaths: '+jres['response'][0]['deaths']['new'].replace('+','')+'\nTtoal Deaths: '+str(jres['response'][0]['deaths']['total']))
+        except:
+            update.message.reply_text("Sorry, The selected country has issue with their data\nTry another coutry")
     else:
         update.message.reply_text('No result found, sowwy sar :(')
-    logger.info('User %s ENDED /covid_info', user.name)
+
+    logger.info('User %s ENDED /covid_info searching "%s"', user.name, var_country)
     return ConversationHandler.END
 
 def cancel_covid(update: Update, context: CallbackContext) -> int:
@@ -143,8 +138,7 @@ def main():
     covid_conv_handler = ConversationHandler(
         entry_points=[CommandHandler('covid_info', covid_inf)],
         states={
-            COUNTRY: [MessageHandler(Filters.text & ~Filters.command, country)],
-            ISO: [MessageHandler(Filters.text & ~Filters.command, iso)],
+            COUNTRY: [MessageHandler(Filters.text & ~Filters.command, country)]
         },
         fallbacks=[CommandHandler('cancel', cancel_covid)],
     )
