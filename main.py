@@ -141,6 +141,7 @@ def kang(update: Update, context: CallbackContext) -> int:
     bot = context.bot
     msg= update.message
     user = update.effective_user
+    usermsg = update.message.from_user
     packnum = 0
     packname = "a" + str(user.id) + "_by_"+bot.username
     packname_found = 0
@@ -194,8 +195,10 @@ def kang(update: Update, context: CallbackContext) -> int:
             bot.add_sticker_to_set(user_id=user.id, name=packname,
                                     png_sticker=open('kangsticker.png', 'rb'), emojis=sticker_emoji)
             msg.reply_text(f"Sticker successfully added to [pack](t.me/addstickers/{packname})", parse_mode=ParseMode.MARKDOWN)
+            logger.info('User %s ENDED /kang with success"', usermsg.name)
         except OSError as e:
             msg.reply_text("I can only kang images m8.")
+            logger.info('User %s ENDED /kang with error"', usermsg.name)
             print(e)
             return
         except TelegramError as e:
@@ -205,15 +208,17 @@ def kang(update: Update, context: CallbackContext) -> int:
                 im.save(kangsticker, "PNG")
                 bot.add_sticker_to_set(user_id=user.id, name=packname,
                                         png_sticker=open('kangsticker.png', 'rb'), emojis=sticker_emoji)
-                msg.reply_text(f"Sticker successfully added to [pack](t.me/addstickers/{packname})" +
-                                f"\nEmoji is: {sticker_emoji}", parse_mode=ParseMode.MARKDOWN)
+                msg.reply_text(f"Sticker successfully added to [pack](t.me/addstickers/{packname})", parse_mode=ParseMode.MARKDOWN)
+                logger.info('User %s ENDED /kang with success"', usermsg.name)
             elif e.message == "Invalid sticker emojis":
                 msg.reply_text("Invalid emoji(s).")
+                logger.info('User %s ENDED /kang with error"', usermsg.name)
             elif e.message == "Stickers_too_much":
                 msg.reply_text("Max packsize reached. Press F to pay respecc.")
+                logger.info('User %s ENDED /kang with error"', usermsg.name)
             elif e.message == "Internal Server Error: sticker set not found (500)":
-                msg.reply_text("Sticker successfully added to [pack](t.me/addstickers/%s)" % packname + "\n"
-                            "Emoji is:" + " " + sticker_emoji, parse_mode=ParseMode.MARKDOWN)
+                msg.reply_text("Sticker successfully added to [pack](t.me/addstickers/%s)" % packname, parse_mode=ParseMode.MARKDOWN)
+                logger.info('User %s ENDED /kang with success"', usermsg.name)
             print(e)
     else:
         packs = "Please reply to a sticker, or image to kang it!\nOh, by the way. here are your packs:\n"
