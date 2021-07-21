@@ -5,6 +5,7 @@ import json
 import logging
 import requests
 from doggo import doggoF
+from basic import start, help_command, unknown
 from pathlib import Path
 from PIL import Image
 from typing import List
@@ -29,28 +30,6 @@ COUNTRY = range(1)
 
 #   needed for /msg conversation
 ID, MESSAGE = range(2)
-
-########################### BASIC COMM ###########################
-
-#   respond to /start
-def start(update: Update, context: CallbackContext) -> None:
-    user = update.message.from_user
-    logger.info('User %s started /start', user.name)
-    user = update.effective_user
-    update.message.reply_markdown_v2(fr'Hi {user.mention_markdown_v2()}, How can I help you?')
-    update.message.reply_text('Type /help to view all available commands')
-
-#   respond to /help
-def help_command(update: Update, context: CallbackContext) -> None:
-    user = update.message.from_user
-    logger.info('User %s started /help', user.name)
-    update.message.reply_text('List of commands: \n\n- help\n- doggo\n- covid_info\n- msg\n- kang')
-
-#   respond to an unknown command
-def unknown(update: Update, context: CallbackContext)-> None:
-    user = update.message.from_user
-    logger.info('User %s started unknow command: %s', user.name, update.message.text)
-    context.bot.send_message(chat_id=update.effective_chat.id, text='Unknown command\nMe bot, me no pero like u :(')
 
 ########################## SEND MESSAGE ##########################
 
