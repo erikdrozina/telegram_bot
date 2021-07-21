@@ -9,7 +9,6 @@ from basic import start, help_command, unknown
 from msg import msg_conv_handler
 from pathlib import Path
 from PIL import Image
-from typing import List
 from telegram import Update, ReplyKeyboardRemove, TelegramError, ParseMode, Bot, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext, ConversationHandler
 
