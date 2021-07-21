@@ -75,11 +75,11 @@ def send_msg(update: Update, context: CallbackContext)-> int:
     send_msg.msg = txt
     try:
         context.bot.send_message(chat_id=get_id.id, text=send_msg.msg)
-        logger.info('Message: %s sent to user id %s', send_msg.msg, get_id.id)
+        logger.info('Message sent to user id %s', get_id.id)
         update.message.reply_text('Message sent')
         logger.info('User %s ENDED /msg with success', user.name)
     except:
-        logger.info('Message: %s NOT sent to user id %s', send_msg.msg, get_id.id)
+        logger.info('Message NOT sent to user id %s', get_id.id)
         update.message.reply_text('Couldn\'t send the message\nThe user must start the bot or the chat id was wrong')
         logger.info('User %s ENDED /msg with error', user.name)
     return ConversationHandler.END
@@ -118,7 +118,7 @@ def country(update: Update, context: CallbackContext) -> int:
     if response != '{"get":"statistics","parameters":{"country":"'+var_country+'"},"errors":[],"results":0,"response":[]}':
         jres = json.loads(response)
         try:
-            context.bot.send_message(chat_id=update.effective_chat.id, text='Covid stats for: '+jres['response'][0]['country']+', '+jres['response'][0]['continent']+' as '+jres['response'][0]['day']+'\n\nNew Cases: '+jres['response'][0]['cases']['new'].replace('+', '')+'\nActive Cases:'+str(jres['response'][0]['cases']['active'])+'\nCritical Cases: '+str(jres['response'][0]['cases']['critical'])+'\nTotal Recovered: '+str(jres['response'][0]['cases']['recovered'])+'\n\nNew Deaths: '+jres['response'][0]['deaths']['new'].replace('+','')+'\nTtoal Deaths: '+str(jres['response'][0]['deaths']['total']))
+            context.bot.send_message(chat_id=update.effective_chat.id, text='Covid stats for: '+jres['response'][0]['country']+', '+jres['response'][0]['continent']+' as '+jres['response'][0]['day']+'\n\nNew Cases: '+jres['response'][0]['cases']['new'].replace('+', '')+'\nActive Cases:'+str(jres['response'][0]['cases']['active'])+'\nCritical Cases: '+str(jres['response'][0]['cases']['critical'])+'\nTotal Recovered: '+str(jres['response'][0]['cases']['recovered'])+'\n\nNew Deaths: '+jres['response'][0]['deaths']['new'].replace('+','')+'\nTotal Deaths: '+str(jres['response'][0]['deaths']['total']))
             logger.info('User %s ENDED /covid_info searching "%s with success"', user.name, var_country)
         except:
             update.message.reply_text("Sorry, The selected country has issue with their data\nTry another coutry")
@@ -195,10 +195,10 @@ def kang(update: Update, context: CallbackContext) -> int:
             bot.add_sticker_to_set(user_id=user.id, name=packname,
                                     png_sticker=open('kangsticker.png', 'rb'), emojis=sticker_emoji)
             msg.reply_text(f"Sticker successfully added to [pack](t.me/addstickers/{packname})", parse_mode=ParseMode.MARKDOWN)
-            logger.info('User %s ENDED /kang with success"', usermsg.name)
+            logger.info('User %s ENDED /kang with success', usermsg.name)
         except OSError as e:
             msg.reply_text("I can only kang images m8.")
-            logger.info('User %s ENDED /kang with error"', usermsg.name)
+            logger.info('User %s ENDED /kang with error', usermsg.name)
             print(e)
             return
         except TelegramError as e:
@@ -209,16 +209,16 @@ def kang(update: Update, context: CallbackContext) -> int:
                 bot.add_sticker_to_set(user_id=user.id, name=packname,
                                         png_sticker=open('kangsticker.png', 'rb'), emojis=sticker_emoji)
                 msg.reply_text(f"Sticker successfully added to [pack](t.me/addstickers/{packname})", parse_mode=ParseMode.MARKDOWN)
-                logger.info('User %s ENDED /kang with success"', usermsg.name)
+                logger.info('User %s ENDED /kang with success', usermsg.name)
             elif e.message == "Invalid sticker emojis":
                 msg.reply_text("Invalid emoji(s).")
-                logger.info('User %s ENDED /kang with error"', usermsg.name)
+                logger.info('User %s ENDED /kang with error', usermsg.name)
             elif e.message == "Stickers_too_much":
                 msg.reply_text("Max packsize reached. Press F to pay respecc.")
-                logger.info('User %s ENDED /kang with error"', usermsg.name)
+                logger.info('User %s ENDED /kang with error', usermsg.name)
             elif e.message == "Internal Server Error: sticker set not found (500)":
                 msg.reply_text("Sticker successfully added to [pack](t.me/addstickers/%s)" % packname, parse_mode=ParseMode.MARKDOWN)
-                logger.info('User %s ENDED /kang with success"', usermsg.name)
+                logger.info('User %s ENDED /kang with success', usermsg.name)
             print(e)
     else:
         packs = "Please reply to a sticker, or image to kang it!\nOh, by the way. here are your packs:\n"
