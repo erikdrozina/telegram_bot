@@ -20,6 +20,10 @@ Open a terminal and type:
 
 Create a file called "token.yaml" and paste the bot token in it
 
+Install required packages from requirements.txt
+
+    pip3 install -r requirements.txt
+
 Run the python code:
 
     python3 main.py
