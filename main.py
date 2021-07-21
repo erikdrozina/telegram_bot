@@ -1,5 +1,3 @@
-import os
-import math
 import yaml
 import logging
 from doggo import doggoF
@@ -8,9 +6,7 @@ from msg import msg_conv_handler
 from covid import covid_conv_handler
 from kang import kang
 from pathlib import Path
-from PIL import Image
-from telegram import Update, TelegramError, ParseMode, InlineKeyboardMarkup, InlineKeyboardButton
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext, ConversationHandler
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 #   retrive the bot token from the token.yaml file
 def get_token():
@@ -24,8 +20,6 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO
 )
 logger = logging.getLogger(__name__)
-
-
 
 ############################## MAIN ##############################
 
