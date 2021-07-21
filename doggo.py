@@ -1,5 +1,3 @@
-from telegram import Update, ForceReply
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
 import logging
 import requests
 import re
