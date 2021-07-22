@@ -1,5 +1,4 @@
 import yaml
-import logging
 from doggo import doggoF
 from basic import start, help_command, unknown
 from msg import msg_conv_handler
@@ -14,12 +13,6 @@ def get_token():
     with open(full_file_path) as token:
         token_data = yaml.load(token, Loader=yaml.Loader)
     return token_data
-
-#   enable logging
-logging.basicConfig(
-    format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO
-)
-logger = logging.getLogger(__name__)
 
 ############################## MAIN ##############################
 
